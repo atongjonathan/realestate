@@ -1,0 +1,533 @@
+{% extends "app/layout.html" %}
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/post-9.css' %}">
+
+<style>
+    .filter-section {
+        padding: 40px 20px;
+        background-color: #f8f9fa;
+        margin-bottom: 40px;
+    }
+
+    .filter-wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .filter-title {
+        font-size: 28px;
+        font-weight: 600;
+        margin-bottom: 30px;
+        color: #333;
+    }
+
+    .filter-form {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group label {
+        font-weight: 500;
+        margin-bottom: 8px;
+        font-size: 13px;
+        color: #555;
+    }
+
+    .form-group input,
+    .form-group select {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 13px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        transition: border-color 0.3s, box-shadow 0.3s;
+        box-sizing: border-box;
+        background-color: white;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+        outline: none;
+        border-color: #4a5568;
+        box-shadow: 0 0 0 2px rgba(74, 85, 104, 0.1);
+    }
+
+    .form-group input::placeholder {
+        color: #999;
+    }
+
+    .button-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .search-btn,
+    .reset-btn {
+        padding: 11px 24px;
+        border: none;
+        border-radius: 4px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .search-btn {
+        background-color: #2d3748;
+        color: white;
+    }
+
+    .search-btn:hover {
+        background-color: #1a202c;
+    }
+
+    .reset-btn {
+        background-color: #cbd5e0;
+        color: #2d3748;
+    }
+
+    .reset-btn:hover {
+        background-color: #a0aec0;
+    }
+
+    .results-info {
+        margin-top: 15px;
+        font-size: 13px;
+        color: #666;
+        display: none;
+    }
+
+    .results-info.show {
+        display: block;
+    }
+
+    /* Elementor-style properties grid */
+    .properties-container {
+        max-width: 100%;
+    }
+
+    .properties-header {
+        text-align: center;
+        margin-bottom: 40px;
+        padding: 0 20px;
+    }
+
+    .properties-header h2 {
+        font-size: 32px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: #000;
+    }
+
+    .properties-divider {
+        width: 60px;
+        height: 3px;
+        background-color: #2d3748;
+        margin: 0 auto 30px;
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 60px 20px;
+        color: #666;
+        font-size: 16px;
+    }
+
+    .properties-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+        gap: 40px;
+        padding: 40px 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .property-card {
+        background: white;
+        border-radius: 4px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .property-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    .property-image-wrapper {
+        width: 100%;
+        height: 280px;
+        overflow: hidden;
+    }
+
+    .property-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        background-color: #e0e0e0;
+        transition: transform 0.3s ease;
+    }
+
+    .property-card:hover .property-image {
+        transform: scale(1.05);
+    }
+
+    .property-location {
+        padding: 12px 20px;
+        font-size: 12px;
+        color: #666;
+        font-weight: 500;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .property-content {
+        padding: 20px;
+    }
+
+    .property-title {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 12px;
+        color: #000;
+    }
+
+    .property-description {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 16px;
+        line-height: 1.6;
+    }
+
+    .property-price {
+        font-size: 20px;
+        font-weight: 700;
+        color: #2d3748;
+        margin-bottom: 20px;
+    }
+
+    .property-btn {
+        display: block;
+        width: 100%;
+        padding: 11px;
+        background-color: transparent;
+        color: #2d3748;
+        text-align: center;
+        border: 2px solid #2d3748;
+        border-radius: 4px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .property-btn:hover {
+        background-color: #2d3748;
+        color: white;
+        text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+        .filter-form {
+            grid-template-columns: 1fr;
+        }
+
+        .button-group {
+            flex-direction: column;
+        }
+
+        .search-btn,
+        .reset-btn {
+            width: 100%;
+        }
+
+        .properties-grid {
+            grid-template-columns: 1fr;
+            gap: 30px;
+            padding: 30px 15px;
+        }
+
+        .properties-header h2 {
+            font-size: 24px;
+        }
+    }
+</style>
+
+<!-- Filter Section -->
+<div class="filter-section">
+    <div class="filter-wrapper">
+        <h3 class="filter-title">Search Properties</h3>
+        
+        <form id="property-filter-form" class="filter-form">
+            <!-- Search by Keyword -->
+            <div class="form-group">
+                <label for="search-keyword">Search</label>
+                <input type="text" id="search-keyword" name="search" placeholder="Property name or location...">
+            </div>
+
+            <!-- Price Range -->
+            <div class="form-group">
+                <label for="price-min">Min Price</label>
+                <input type="number" id="price-min" name="price_min" placeholder="Min price">
+            </div>
+
+            <div class="form-group">
+                <label for="price-max">Max Price</label>
+                <input type="number" id="price-max" name="price_max" placeholder="Max price">
+            </div>
+
+            <!-- Location -->
+            <div class="form-group">
+                <label for="location-filter">Location</label>
+                <input type="text" id="location-filter" name="location" placeholder="City or area...">
+            </div>
+
+            <!-- Property Type -->
+            <div class="form-group">
+                <label for="property-type-filter">Type</label>
+                <select id="property-type-filter" name="property_type">
+                    <option value="">All Types</option>
+                    <option value="apartment">Apartment</option>
+                    <option value="house">House</option>
+                    <option value="townhouse">Townhouse</option>
+                    <option value="luxury">Luxury</option>
+                    <option value="vacation">Vacation</option>
+                </select>
+            </div>
+
+            <!-- Bedrooms -->
+            <div class="form-group">
+                <label for="bedrooms-filter">Bedrooms</label>
+                <select id="bedrooms-filter" name="bedrooms">
+                    <option value="">Any</option>
+                    <option value="1">1+</option>
+                    <option value="2">2+</option>
+                    <option value="3">3+</option>
+                    <option value="4">4+</option>
+                </select>
+            </div>
+
+            <!-- Status -->
+            <div class="form-group">
+                <label for="status-filter">Status</label>
+                <select id="status-filter" name="status">
+                    <option value="">All Status</option>
+                    <option value="for-sale">For Sale</option>
+                    <option value="for-rent">For Rent</option>
+                </select>
+            </div>
+        </form>
+
+        <!-- Filter Buttons -->
+        <div class="button-group">
+            <button id="search-btn" type="button" class="search-btn">Search</button>
+            <button id="reset-btn" type="button" class="reset-btn">Clear</button>
+        </div>
+
+        <!-- Results Counter -->
+        <div id="results-info" class="results-info">
+            Found <span id="results-count">0</span> properties matching your criteria.
+        </div>
+    </div>
+</div>
+
+<!-- Properties Section -->
+<div class="properties-container">
+    <div class="properties-header">
+        <h2>Available Properties</h2>
+        <div class="properties-divider"></div>
+    </div>
+    
+    <div id="no-results-message" class="no-results" style="display: none;">
+        <p>No properties found matching your criteria. Please try adjusting your filters.</p>
+    </div>
+
+    <div class="properties-grid" id="properties-grid">
+        <!-- Property Card 1 -->
+         
+        <div class="property-card" data-property='{"type": "apartment", "price": 150000, "location": "queens"}'>
+            <div class="property-image-wrapper">
+                <img src="https://websitedemos.net/real-estate-company-04/wp-content/uploads/sites/1484/2023/07/feature-01.jpg" alt="Modern Stylish Apartment" class="property-image">
+            </div>
+            <div class="property-location">Apartment - Queens</div>
+            <div class="property-content">
+                <h3 class="property-title">Modern Stylish Apartment</h3>
+                <p class="property-description">Discover the epitome of contemporary living in our sleek and chic modern stylish apartments.</p>
+                <div class="property-price">$150,000</div>
+                <button class="property-btn">View Details</button>
+            </div>
+        </div>
+        
+
+        <!-- Property Card 2 -->
+        <div class="property-card" data-property='{"type": "apartment", "price": 180000, "location": "brooklyn"}'>
+            <div class="property-image-wrapper">
+                <img src="https://websitedemos.net/real-estate-company-04/wp-content/uploads/sites/1484/2023/07/feature-02.jpg" alt="Contemporary Apartments" class="property-image">
+            </div>
+            <div class="property-location">Apartment - Brooklyn</div>
+            <div class="property-content">
+                <h3 class="property-title">Contemporary Apartments</h3>
+                <p class="property-description">Experience the perfect blend of sophistication and urban living in our cutting-edge contemporary apartments.</p>
+                <div class="property-price">$180,000</div>
+                <button class="property-btn">View Details</button>
+            </div>
+        </div>
+
+        <!-- Property Card 3 -->
+        <div class="property-card" data-property='{"type": "house", "price": 350000, "location": "manhattan"}'>
+            <div class="property-image-wrapper">
+                <img src="https://websitedemos.net/real-estate-company-04/wp-content/uploads/sites/1484/2023/07/feature-03.jpg" alt="Suburban Single-Family Homes" class="property-image">
+            </div>
+            <div class="property-location">House - Manhattan</div>
+            <div class="property-content">
+                <h3 class="property-title">Suburban Single-Family Homes</h3>
+                <p class="property-description">Embrace the idyllic charm and tranquility of suburban living in our spacious and welcoming single-family homes.</p>
+                <div class="property-price">$350,000</div>
+                <button class="property-btn">View Details</button>
+            </div>
+        </div>
+
+        <!-- Property Card 4 -->
+        <div class="property-card" data-property='{"type": "luxury", "price": 500000, "location": "manhattan"}'>
+            <div class="property-image-wrapper">
+                <img src="https://websitedemos.net/real-estate-company-04/wp-content/uploads/sites/1484/2023/07/feature-04.jpg" alt="Luxury Estates" class="property-image">
+            </div>
+            <div class="property-location">Luxury - Manhattan</div>
+            <div class="property-content">
+                <h3 class="property-title">Luxury Estates</h3>
+                <p class="property-description">Experience opulence and sophistication with our exclusive collection of luxury estate properties.</p>
+                <div class="property-price">$500,000</div>
+                <button class="property-btn">View Details</button>
+            </div>
+        </div>
+
+        <!-- Property Card 5 -->
+        <div class="property-card" data-property='{"type": "townhouse", "price": 220000, "location": "queens"}'>
+            <div class="property-image-wrapper">
+                <img src="https://websitedemos.net/real-estate-company-04/wp-content/uploads/sites/1484/2023/07/feature-05.jpg" alt="Townhouses" class="property-image">
+            </div>
+            <div class="property-location">Townhouse - Queens</div>
+            <div class="property-content">
+                <h3 class="property-title">Townhouses</h3>
+                <p class="property-description">Enjoy modern living and convenience with our stylish and well-designed townhouse residences.</p>
+                <div class="property-price">$220,000</div>
+                <button class="property-btn">View Details</button>
+            </div>
+        </div>
+
+        <!-- Property Card 6 -->
+        <div class="property-card" data-property='{"type": "vacation", "price": 125000, "location": "bronx"}'>
+            <div class="property-image-wrapper">
+                <img src="https://websitedemos.net/real-estate-company-04/wp-content/uploads/sites/1484/2023/07/feature-06.jpg" alt="Vacation Homes" class="property-image">
+            </div>
+            <div class="property-location">Vacation Home - Bronx</div>
+            <div class="property-content">
+                <h3 class="property-title">Vacation Homes</h3>
+                <p class="property-description">Find your ideal getaway with our range of vacation homes, perfect for relaxation and creating lasting memories.</p>
+                <div class="property-price">$125,000</div>
+                <button class="property-btn">View Details</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filter Functionality Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchBtn = document.getElementById('search-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const searchForm = document.getElementById('property-filter-form');
+        const resultsInfo = document.getElementById('results-info');
+        const noResultsMessage = document.getElementById('no-results-message');
+
+        searchBtn.addEventListener('click', function() {
+            const filters = getFilterValues();
+            applyFilters(filters);
+            displayResultsInfo();
+        });
+
+        resetBtn.addEventListener('click', function() {
+            searchForm.reset();
+            resultsInfo.classList.remove('show');
+            noResultsMessage.style.display = 'none';
+            const allProperties = document.querySelectorAll('.property-card');
+            allProperties.forEach(prop => prop.style.display = '');
+        });
+
+        searchForm.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                searchBtn.click();
+            }
+        });
+    });
+
+    function getFilterValues() {
+        return {
+            search: document.getElementById('search-keyword').value.toLowerCase(),
+            priceMin: parseFloat(document.getElementById('price-min').value) || 0,
+            priceMax: parseFloat(document.getElementById('price-max').value) || Infinity,
+            location: document.getElementById('location-filter').value.toLowerCase(),
+            propertyType: document.getElementById('property-type-filter').value.toLowerCase(),
+            bedrooms: parseInt(document.getElementById('bedrooms-filter').value) || 0,
+            status: document.getElementById('status-filter').value.toLowerCase()
+        };
+    }
+
+    function applyFilters(filters) {
+        const propertyCards = document.querySelectorAll('.property-card');
+        let visibleCount = 0;
+
+        propertyCards.forEach(card => {
+            if (shouldShowCard(card, filters)) {
+                card.style.display = '';
+                visibleCount++;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        document.getElementById('results-count').textContent = visibleCount;
+        document.getElementById('no-results-message').style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    function shouldShowCard(card, filters) {
+        const cardText = card.textContent.toLowerCase();
+
+        if (filters.search && !cardText.includes(filters.search)) {
+            return false;
+        }
+
+        if (filters.location && !cardText.includes(filters.location)) {
+            return false;
+        }
+
+        if (filters.propertyType && !cardText.includes(filters.propertyType)) {
+            return false;
+        }
+
+        if (filters.status && !cardText.includes(filters.status)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    function displayResultsInfo() {
+        document.getElementById('results-info').classList.add('show');
+    }
+</script>
+
+{% endblock %}
