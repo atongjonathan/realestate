@@ -1,6 +1,3 @@
-from multiprocessing import context
-from turtle import color
-
 from django.shortcuts import render
 
 
