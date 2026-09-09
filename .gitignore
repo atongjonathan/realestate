@@ -21,6 +21,7 @@ env
 # IDE/editor settings
 idea/
 vscode/
+.vscode/
 *.sublime-*
 *.swp
 *.swo

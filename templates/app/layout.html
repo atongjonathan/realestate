@@ -1,4 +1,5 @@
 {% load static %}
+<!DOCTYPE html>
 <html lang="en-US">
 
 <head>
@@ -31,9 +32,11 @@
 
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
+    <meta name="description"
+        content="Discover Your Dream Home with Us Find the Perfect Property for Your Lifestyle Start searching What We Do Simplifying the journey of buying, selling, and renting properties. Our expert team provides comprehensive real estate solutions tailored to your needs 01 Property Sales Find your dream home with Popote Listings – our expert team will guide […]">
     <!-- This site is optimized with the Yoast SEO plugin v27.3 - https://yoast.com/product/yoast-seo-wordpress/ -->
     <title>{{ title }}</title>
-    <link rel="canonical" href="https://websitedemos.net/real-estate-company-04/">
+    <link rel="canonical" href="{{ request.build_absolute_uri }}">
     <meta property="og:locale" content="en_US">
     <meta property="og:type" content="website">
     <meta property="og:title" content="{{ title }}">
@@ -163,9 +166,7 @@
     <meta name="generator"
         content="Elementor 4.0.1; features: e_font_icon_svg, additional_custom_breakpoints; settings: css_print_method-external, google_font-enabled, font_display-swap">
 
-    <link rel="icon"
-        href="{% static 'images/favicon.ico' %}"
-        sizes="32x32">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" sizes="32x32">
     <!-- <link rel="icon"
         href="https://websitedemos.net/real-estate-company-04/wp-content/uploads/sites/1484/2023/07/fav-icon.svg"
         sizes="192x192">
@@ -178,7 +179,7 @@
         href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400&amp;family=League+Spartan&amp;family=Playfair+Display:wght@700&amp;family=Source+Sans+Pro:wght@400&amp;family=Poppins:wght@700&amp;family=Lato:wght@400&amp;family=Montserrat:wght@700&amp;family=Lato:wght@400&amp;family=Rubik:wght@700&amp;family=Karla:wght@400&amp;family=Roboto+Condensed:wght@700&amp;family=Roboto:wght@400&amp;family=Merriweather:wght@700&amp;family=Inter:wght@400&amp;family=Vollkorn:wght@700&amp;family=Open+Sans:wght@400&amp;family=Open+Sans:wght@700&amp;family=Work+Sans:wght@400&amp;display=swap">
     <script src="https://websitedemos.net/real-estate-company-04/wp-includes/js/wp-emoji-release.min.js?ver=6.9.7"
         defer=""></script>
-          
+
 </head>
 
 <body itemtype="https://schema.org/WebPage" itemscope="itemscope"
@@ -212,13 +213,10 @@
                                         data-section="title_tagline">
                                         <div class="site-branding ast-site-identity"
                                             itemtype="https://schema.org/Organization" itemscope="itemscope">
-                                            <span class="site-logo-img"><a
-                                                    href="/"
-                                                    class="custom-logo-link" rel="home" aria-current="page"><img
-                                                        width="146" height="24"
-                                                        src="{% static 'images/popote_trans.png' %}"
-                                                        class="custom-logo" alt="Popote Listings"
-                                                        decoding="async"></a></span>
+                                            <span class="site-logo-img"><a href="/" class="custom-logo-link" rel="home"
+                                                    aria-current="page"><img width="146" height="24"
+                                                        src="{% static 'images/popote_trans.png' %}" class="custom-logo"
+                                                        alt="Popote Listings" decoding="async"></a></span>
                                         </div>
                                         <!-- .site-branding -->
                                     </div>
@@ -240,31 +238,21 @@
                                                     <div class="main-navigation ast-inline-flex">
                                                         <ul id="ast-hf-menu-1"
                                                             class="main-header-menu ast-menu-shadow ast-nav-menu ast-flex  submenu-with-border stack-on-mobile">
-                                                            <li id="menu-item-345"
-                                                                class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home {% if request.resolver_match.url_name == 'index' %}current-menu-item{% endif %} page_item page-item-15 {% if request.resolver_match.url_name == 'index' %}current_page_item{% endif %} menu-item-345">
-                                                                <a href="{% url 'index' %}"
-                                                                    aria-current="page" class="menu-link">Home</a>
+                                                            {% for item in menu_items %}
+                                                            <li id="menu-item-{{ item.url_name }}"
+                                                                class="menu-item menu-item-type-post_type menu-item-object-page {% if request.resolver_match.url_name == item.url_name %}current-menu-item{% endif %} menu-item-{{ item.url_name }}">
+                                                                <a href="{% url item.url_name %}" class="menu-link">
+                                                                    {{ item.name }}</a>
                                                             </li>
-                                                            <li id="menu-item-346"
-                                                                class="menu-item menu-item-type-post_type menu-item-object-page {% if request.resolver_match.url_name == 'about' %}current-menu-item{% endif %} menu-item-346">
-                                                                <a href="{% url 'about' %}"
-                                                                    class="menu-link">About</a>
+                                                            {% endfor %}
+
+                                                            {% if user.is_superuser %}
+                                                            <li id="menu-item-admin"
+                                                                class="menu-item menu-item-type-custom menu-item-object-custom menu-item-admin">
+                                                                <a href="{% url 'admin:index' %}" class="menu-link"
+                                                                    target="_blank">Admin</a>
                                                             </li>
-                                                            <li id="menu-item-349"
-                                                                class="menu-item menu-item-type-post_type menu-item-object-page {% if request.resolver_match.url_name == 'services' %}current-menu-item{% endif %} menu-item-349">
-                                                                <a href="{% url 'services' %}"
-                                                                    class="menu-link">Services</a>
-                                                            </li>
-                                                            <li id="menu-item-348"
-                                                                class="menu-item menu-item-type-post_type menu-item-object-page {% if request.resolver_match.url_name == 'properties' %}current-menu-item{% endif %} menu-item-348">
-                                                                <a href="{% url 'properties' %}"
-                                                                    class="menu-link">Properties</a>
-                                                            </li>
-                                                            <li id="menu-item-347"
-                                                                class="menu-item menu-item-type-post_type menu-item-object-page {% if request.resolver_match.url_name == 'contact' %}current-menu-item{% endif %} menu-item-347">
-                                                                <a href="{% url 'contact' %}"
-                                                                    class="menu-link">Contact</a>
-                                                            </li>
+                                                            {% endif %}
                                                         </ul>
                                                     </div>
                                                 </nav>
@@ -292,8 +280,9 @@
                                                             <path
                                                                 d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z">
                                                             </path>
-                                                        </svg></span></a><a href="" aria-label="Pinterest"
-                                                    target="_blank" rel="noopener noreferrer"
+                                                        </svg></span></a>
+                                                <a href="" aria-label="Pinterest" target="_blank"
+                                                    rel="noopener noreferrer"
                                                     style="--color: #ea575a; --background-color: transparent;"
                                                     class="ast-builder-social-element ast-inline-flex ast-pinterest header-social-item"><span
                                                         aria-hidden="true"
@@ -302,7 +291,8 @@
                                                             <path
                                                                 d="M204 6.5C101.4 6.5 0 74.9 0 185.6 0 256 39.6 296 63.6 296c9.9 0 15.6-27.6 15.6-35.4 0-9.3-23.7-29.1-23.7-67.8 0-80.4 61.2-137.4 140.4-137.4 68.1 0 118.5 38.7 118.5 109.8 0 53.1-21.3 152.7-90.3 152.7-24.9 0-46.2-18-46.2-43.8 0-37.8 26.4-74.4 26.4-113.4 0-66.2-93.9-54.2-93.9 25.8 0 16.8 2.1 35.4 9.6 50.7-13.8 59.4-42 147.9-42 209.1 0 18.9 2.7 37.5 4.5 56.4 3.4 3.8 1.7 3.4 6.9 1.5 50.4-69 48.6-82.5 71.4-172.8 12.3 23.4 44.1 36 69.3 36 106.2 0 153.9-103.5 153.9-196.8C384 71.3 298.2 6.5 204 6.5z">
                                                             </path>
-                                                        </svg></span></a><a href="" aria-label="YouTube" target="_blank"
+                                                        </svg></span></a>
+                                                <a href="" aria-label="YouTube" target="_blank"
                                                     rel="noopener noreferrer"
                                                     style="--color: #e96651; --background-color: transparent;"
                                                     class="ast-builder-social-element ast-inline-flex ast-youtube header-social-item"><span
@@ -312,7 +302,8 @@
                                                             <path
                                                                 d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z">
                                                             </path>
-                                                        </svg></span></a>
+                                                        </svg></span>
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
@@ -376,13 +367,10 @@
                                     data-section="title_tagline">
                                     <div class="site-branding ast-site-identity"
                                         itemtype="https://schema.org/Organization" itemscope="itemscope">
-                                        <span class="site-logo-img"><a
-                                                href="/"
-                                                class="custom-logo-link" rel="home" aria-current="page"><img width="146"
-                                                    height="24"
-                                                    src="{% static 'images/popote_trans.png' %}"
-                                                    class="custom-logo" alt="Popote Listings"
-                                                    decoding="async"></a></span>
+                                        <span class="site-logo-img"><a href="/" class="custom-logo-link" rel="home"
+                                                aria-current="page"><img width="146" height="24"
+                                                    src="{% static 'images/popote_trans.png' %}" class="custom-logo"
+                                                    alt="Popote Listings" decoding="async"></a></span>
                                     </div>
                                     <!-- .site-branding -->
                                 </div>
@@ -431,31 +419,33 @@
                                     <div class="main-navigation">
                                         <ul id="ast-hf-mobile-menu"
                                             class="main-header-menu ast-nav-menu ast-flex  submenu-with-border astra-menu-animation-fade  stack-on-mobile">
+                                            {% for item in menu_items %}
                                             <li
-                                                class="menu-item menu-item-type-post_type menu-item-object-page {% if request.resolver_match.url_name == 'index' %}current-menu-item{% endif %} menu-item-home current-menu-item page_item page-item-15 current_page_item menu-item-345">
-                                                <a href="{% url 'index' %}"
-                                                    aria-current="page" class="menu-link">Home</a>
+                                                class="menu-item menu-item-type-post_type menu-item-object-page {% if request.resolver_match.url_name == item.url_name %}current-menu-item{% endif %} menu-item-home current-menu-item page_item page-item-15 current_page_item menu-item-345">
+                                                <a href="{% url item.url_name %}" aria-current="page"
+                                                    class="menu-link">{{ item.name }}</a>
                                             </li>
+                                            {% endfor %}
+
+                                            <!-- {% if user.is_authenticated %}
+                                                <li
+                                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-350">
+                                                    <a href="{% url 'admin:logout' %}"
+                                                        class="menu-link">Logout</a>
+                                                </li>
+                                            {% else %}
+                                                <li
+                                                    class="menu-item menu-item-type-post_type menu-item-object-page menu-item-350">
+                                                    <a href="{% url 'admin:login' %}"
+                                                        class="menu-link">Login</a>
+                                                </li>
+                                            {% endif %} -->
+                                            {% if user.is_superuser %}
                                             <li
-                                                class="menu-item menu-item-type-post_type menu-item-object-page {% if request.resolver_match.url_name == 'about' %}current-menu-item{% endif %} menu-item-346">
-                                                <a href="{% url 'about' %}"
-                                                    class="menu-link">About</a>
+                                                class="menu-item menu-item-type-post_type menu-item-object-page {% if request.resolver_match.url_name == item.url_name %}current-menu-item{% endif %} menu-item-home current-menu-item page_item page-item-15 current_page_item menu-item-345">
+                                                <a href="{% url 'admin:index' %}" class="menu-link">Admin</a>
                                             </li>
-                                            <li
-                                                class="menu-item menu-item-type-post_type menu-item-object-page {% if request.resolver_match.url_name == 'services' %}current-menu-item{% endif %} menu-item-349">
-                                                <a href="{% url 'services' %}"
-                                                    class="menu-link">Services</a>
-                                            </li>
-                                            <li
-                                                class="menu-item menu-item-type-post_type menu-item-object-page {% if request.resolver_match.url_name == 'properties' %}current-menu-item{% endif %} menu-item-348">
-                                                <a href="{% url 'properties' %}"
-                                                    class="menu-link">Properties</a>
-                                            </li>
-                                            <li
-                                                class="menu-item menu-item-type-post_type menu-item-object-page {% if request.resolver_match.url_name == 'contact' %}current-menu-item{% endif %} menu-item-347">
-                                                <a href="{% url 'contact' %}"
-                                                    class="menu-link">Contact</a>
-                                            </li>
+                                            {% endif %}
                                         </ul>
                                     </div>
                                 </nav>
@@ -483,7 +473,8 @@
                                         data-id="aa9c7f8" data-element_type="container" data-e-type="container">
                                         <div class="elementor-element elementor-element-cc057ce e-flex e-con-boxed e-con e-child"
                                             data-id="cc057ce" data-element_type="container" data-e-type="container"
-                                            data-settings="{&quot;background_background&quot;:&quot;classic&quot;}" style="background-image: url('{{ hero_image }}');">
+                                            data-settings="{&quot;background_background&quot;:&quot;classic&quot;}"
+                                            style="background-image: url('{{ hero_image }}');">
                                             <div class="e-con-inner">
                                                 <div class="elementor-element elementor-element-b7661da elementor-widget elementor-widget-heading"
                                                     data-id="b7661da" data-element_type="widget" data-e-type="widget"
@@ -552,9 +543,8 @@
                                 role="region">
                                 <section id="block-40" class="widget widget_block widget_media_image">
                                     <figure class="wp-block-image size-large"><img loading="lazy" decoding="async"
-                                            width="146" height="24"
-                                            src="{% static 'images/popote_trans.png' %}"
-                                            alt="" class="wp-image-299"></figure>
+                                            width="146" height="24" src="{% static 'images/popote_trans.png' %}" alt=""
+                                            class="wp-image-299"></figure>
                                 </section>
                             </aside>
                         </div>
@@ -567,7 +557,8 @@
                                     <h6 class="wp-block-heading">About Us</h6>
                                 </section>
                                 <section id="block-26" class="widget widget_block widget_text">
-                                    <p>At Popote Listings, we pride ourselves on being a trusted and reputable name in the
+                                    <p>At Popote Listings, we pride ourselves on being a trusted and reputable name in
+                                        the
                                         real estate industry with years of experience.</p>
                                 </section>
                             </aside>
@@ -745,44 +736,44 @@
         })();
     </script>
     <style>
-:root {
-    /* Primary brand gold — matched to the logo */
-    --e-global-color-astglobalcolor0: #D9AD55;
-    --ast-global-color-0: #D9AD55;
+        :root {
+            /* Primary brand gold — matched to the logo */
+            --e-global-color-astglobalcolor0: #D9AD55;
+            --ast-global-color-0: #D9AD55;
 
-    /* Darker gold for hover / accents */
-    --e-global-color-astglobalcolor1: #B88A35;
-    --ast-global-color-1: #B88A35;
+            /* Darker gold for hover / accents */
+            --e-global-color-astglobalcolor1: #B88A35;
+            --ast-global-color-1: #B88A35;
 
-    /* Deep navy — main logo/background color */
-    --e-global-color-astglobalcolor2: #0D1B27;
-    --ast-global-color-2: #0D1B27;
+            /* Deep navy — main logo/background color */
+            --e-global-color-astglobalcolor2: #0D1B27;
+            --ast-global-color-2: #0D1B27;
 
-    /* Muted blue-gray for secondary text */
-    --e-global-color-astglobalcolor3: #65717D;
-    --ast-global-color-3: #65717D;
+            /* Muted blue-gray for secondary text */
+            --e-global-color-astglobalcolor3: #65717D;
+            --ast-global-color-3: #65717D;
 
-    /* Warm ivory — replaces the harsh white */
-    --e-global-color-astglobalcolor4: #F7F0DC;
-    --ast-global-color-4: #F7F0DC;
+            /* Warm ivory — replaces the harsh white */
+            --e-global-color-astglobalcolor4: #F7F0DC;
+            --ast-global-color-4: #F7F0DC;
 
-    /* Clean white */
-    --e-global-color-astglobalcolor5: #FFFFFF;
-    --ast-global-color-5: #FFFFFF;
+            /* Clean white */
+            --e-global-color-astglobalcolor5: #FFFFFF;
+            --ast-global-color-5: #FFFFFF;
 
-    /* Soft champagne background */
-    --e-global-color-astglobalcolor6: #EFE2C0;
-    --ast-global-color-6: #EFE2C0;
+            /* Soft champagne background */
+            --e-global-color-astglobalcolor6: #EFE2C0;
+            --ast-global-color-6: #EFE2C0;
 
-    /* Deepest navy */
-    --e-global-color-astglobalcolor7: #08131D;
-    --ast-global-color-7: #08131D;
+            /* Deepest navy */
+            --e-global-color-astglobalcolor7: #08131D;
+            --ast-global-color-7: #08131D;
 
-    /* Dark neutral */
-    --e-global-color-astglobalcolor8: #18232D;
-    --ast-global-color-8: #18232D;
-}
-</style>
+            /* Dark neutral */
+            --e-global-color-astglobalcolor8: #18232D;
+            --ast-global-color-8: #18232D;
+        }
+    </style>
     <div id="ast-scroll-top" tabindex="0" class="ast-scroll-top-icon ast-scroll-to-top-right" data-on-devices="both"
         style="display: none;">
         <span class="ast-icon icon-arrow"><svg class="ast-arrow-svg" xmlns="http://www.w3.org/2000/svg"
@@ -791,7 +782,7 @@
                 <path d="M57.5,38.193l12.5,12.5l12.5-12.5l-2.5-2.5l-10,10l-10-10L57.5,38.193z"></path>
             </svg></span> <span class="screen-reader-text">Scroll to Top</span>
     </div>
-  
+
     <script>
         const lazyloadRunObserver = () => {
             const lazyloadBackgrounds = document.querySelectorAll(`.e-con.e-parent:not(.e-lazyloaded)`);
