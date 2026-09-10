@@ -143,3 +143,7 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 CORS_ALLOWED_ORIGINS = [
     "https://realestate.atongjona.com",
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://realestate.atongjona.com",
+]

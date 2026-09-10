@@ -16,8 +16,9 @@ RUN pip install --no-cache-dir "poetry==$POETRY_VERSION"
 COPY pyproject.toml poetry.lock ./
 
 # Install dependencies
-RUN poetry install --only main --no-root
-
+RUN --mount=type=cache,target=/root/.cache/pypoetry \
+    --mount=type=cache,target=/root/.cache/pip \
+    poetry install --only main --no-root
 # Copy application
 COPY . .
 
